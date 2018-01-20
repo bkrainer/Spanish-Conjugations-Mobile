@@ -4,7 +4,9 @@ import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 /**********************************************************************
  * VerbForms
  *
- * This component contains buttons 
+ * This component contains buttons with each conjugation form the
+ * user can practice. Clicking the button will allow them to type
+ * their answer, and provide feedback on the correctness.
  **********************************************************************/
 export class VerbForms extends Component {
 	constructor(props) {
