@@ -28,11 +28,11 @@ export class VerbForms extends Component {
 		let renderedForms = forms.map(form => {
 			return <TouchableHighlight
 				style={styles.formButton}
-				underlayColor='#d3d3d3'
+				underlayColor='#0275d8'
 				onPress={() => this._handlePress(form)}
 				key={form}
 			>
-				<Text>{form}</Text>
+				<Text style={styles.buttonText}>{form}</Text>
 			</TouchableHighlight>
 		});
 
@@ -75,13 +75,14 @@ const styles = StyleSheet.create({
 	formButton: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#ffffff',
+		backgroundColor: '#f7f7f7',
 		height: 35,
 		minWidth: 50,
 		margin: 10,
 		padding: 10,
 		borderRadius: 5,
 		borderWidth: 1,
+		borderColor: '#0275d8',
 		shadowColor: '#000000',
 		shadowOffset: {
 			width: 0,
@@ -90,4 +91,8 @@ const styles = StyleSheet.create({
 		shadowRadius: 1,
 		shadowOpacity: 0.5,
 	},
+	buttonText: {
+		fontWeight: 'bold',
+		color: '#0275d8',
+	}
 });

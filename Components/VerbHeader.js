@@ -23,9 +23,9 @@ export class VerbHeader extends Component {
 		let form = this.mood + ' ' + this.tense;
 		return (
 			<View style={styles.headerContainer}>
-				<Text style={styles.infinitive}>{this.verb}</Text>
-				<Text style={styles.translation}>{this.translation}</Text>
-				<Text style={styles.moodTense}>{form}</Text>
+				<Text style={[styles.headerText, styles.infinitive]}>{this.verb}</Text>
+				<Text style={[styles.headerText, styles.translation]}>{this.translation}</Text>
+				<Text style={[styles.headerText, styles.moodTense]}>{form}</Text>
 			</View>
 		);
 	}
@@ -53,18 +53,21 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#d3d3d3',
+		backgroundColor: '#0275d8',
 		padding: 25
 	},
 	infinitive: {
 		fontSize: 30,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	},
 	translation: {
-		fontSize: 25
+		fontSize: 25,
 	},
 	moodTense: {
 		fontSize: 20,
-		margin: 20
+		margin: 20,
+	},
+	headerText: {
+		color: '#f7f7f7',
 	},
 });
