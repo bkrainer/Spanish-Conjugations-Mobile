@@ -12,11 +12,12 @@ export class VerbHeader extends Component {
 	constructor(props) {
 		super(props);
 
-		/* TODO: actually initialize the first verb */
-		this.verb = verbs[0]['infinitive'];
-		this.translation = verbs[0]['infinitive_english'];
-		this.mood = verbs[0]['mood_english'];
-		this.tense = verbs[0]['tense_english'];
+		var verb = this.props.verb;
+
+		this.verb = verb['infinitive'];
+		this.translation = verb['infinitive_english'];
+		this.mood = verb['mood_english'];
+		this.tense = verb['tense_english'];
 	}
 
 	render() {
@@ -30,23 +31,6 @@ export class VerbHeader extends Component {
 		);
 	}
 }
-
-/* TODO: use the actual verbs.json data. Either import it from its
- * relative path, or fetch the data with the Fetch API.
- */
-const verbs = [{
-	"infinitive": "abandonar",
-	"infinitive_english": "to abandon, leave behind",
-	"mood_english": "Subjunctive",
-	"tense_english": "Imperfect",
-	"form_1p": "abandonamos",
-	"form_1s": "abandono",
-	"form_2s": "abandonas",
-	"form_3p": "abandonan",
-	"form_3s": "abandona",
-	"gerund": "abandonando",
-	"pastparticiple": "abandonado"
-}];
 
 const styles = StyleSheet.create({
 	headerContainer: {
