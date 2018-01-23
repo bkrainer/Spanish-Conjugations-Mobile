@@ -23,6 +23,7 @@ class UserResponse extends Component {
 		 */
 		this.state = {
 			responses: {},
+			inputFeedback: {},
 		};
 	}
 
@@ -48,20 +49,33 @@ class UserResponse extends Component {
 	_validateResponse(responses,currentForm) {
 		let expected = this.props.correctAnswers[currentForm];
 		let actual = responses[currentForm];
+		let currentStyling = this.state.inputFeedback;
 
 		if (expected == actual) {
-			alert('correct');
+			currentStyling[currentForm] = styles.correctResponse;
 		}
+		else if (actual.trim().length < 1) {
+			currentStyling[currentForm] = {};
+		}
+		else {
+			currentStyling[currentForm] = styles.incorrectResponse;
+		}
+
+		this.setState({
+			inputFeedback: currentStyling,
+		});
 	}
 
 	render() {
 		const currentForm = this.props.currentForm;
 
 		/* style the input box differently, depending on if the user is currently
-		 * able to edit the field.
+		 * able to edit the field, as well as the user's current answer for the
+		 * current form.
 		 */
+		const validationStyle = this.state.inputFeedback[currentForm];
 		const inputStyle = this.props.editable
-			? [ styles.input, styles.editableInput ]
+			? [ styles.input, styles.editableInput, validationStyle ]
 			: [ styles.input, styles.readOnlyInput ];
 
 		return (
@@ -219,5 +233,11 @@ const styles = StyleSheet.create({
 	},
 	readOnlyInput: {
 		backgroundColor: '#e9ecef',
+	},
+	correctResponse: {
+		borderColor: '#28a745',
+	},
+	incorrectResponse: {
+		borderColor: '#dc3545',
 	},
 });
