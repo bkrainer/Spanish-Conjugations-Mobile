@@ -21,10 +21,25 @@ class UserResponse extends Component {
 		 * ('form_1p', 'form_2s', etc) to a string of the user's response.
 		 * This hash starts out empty, and is populated as the user types.
 		 */
-		this.state = {
+		this.state = this.initialState();
+	}
+
+	initialState() {
+		return {
 			responses: {},
 			inputFeedback: {},
 		};
+	}
+
+	/* The set of correct answers is passed in as a prop to the user input component. Whenever
+	 * this set changes, we want to reset this component, because that means the user clicked
+	 * 'Next' and we are now working with a new verb.
+	 */
+	componentWillReceiveProps(nextProps) {
+		/* We just need to check that the infinitive has changed. */
+		if (nextProps.correctAnswers['infinitive'] != this.props.correctAnswers['infinitive']) {
+			this.setState(this.initialState());
+		}
 	}
 
 	/* handler for onChangeText. When the text changes, set the state
@@ -43,7 +58,7 @@ class UserResponse extends Component {
 		}, this._validateResponse(responses,currentForm));
 	}
 
-	/* validates the user's input for a given form, against the correct answer
+	/* validates the user's input for a given form against the correct answer
 	 * (stored in this.props.correctAnswers)
 	 */
 	_validateResponse(responses,currentForm) {
@@ -93,8 +108,8 @@ class UserResponse extends Component {
 			/>
 		);
 	}
-
 }
+
 /**********************************************************************
  * VerbForms
  *
@@ -106,10 +121,23 @@ export class VerbForms extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.state = this.initState();
+	}
+
+	initState () {
+		return {
 			currentForm: '',
 			placeholderText: 'Select a form to conjugate...',
 		};
+	};
+
+	/* The only prop this component inherits is the current verb being tested.
+	 * So whenever the prop changes, we want to reset this component, so it
+	 * is rendered without an initial verb form selected and the appropriate
+	 * placeholder text.
+	 */
+	componentWillReceiveProps(nextProps) {
+		this.setState(this.initState());
 	}
 
 	/* button press handler. when pressed, we want to display the current form

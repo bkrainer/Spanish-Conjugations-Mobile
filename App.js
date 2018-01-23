@@ -19,7 +19,20 @@ export default class Conjugator extends Component {
 		super(props);
 
 		/* TODO: actually initialize the first verb */
-		this.currentVerb = verbs[0];
+		this.verbIndex = 0;
+		this.state = {
+			currentVerb: verbs[this.verbIndex],
+		};
+	}
+
+	/* callback function for fetching the next verb to be displayed. This is called in the
+	 * child component VerbHeader when the 'Next' button is clicked
+	 */
+	_getNextVerb() {
+		this.verbIndex = 1 - this.verbIndex;
+		this.setState({
+			currentVerb: verbs[this.verbIndex],
+		});
 	}
 
 	render() {
@@ -28,26 +41,44 @@ export default class Conjugator extends Component {
 			 * important components
 			 */
 			<KeyboardAvoidingView behavior='padding' style={styles.container}>
-				<VerbHeader verb={this.currentVerb}/>
-				<VerbForms verb={this.currentVerb}/>
+				<VerbHeader
+					verb={this.state.currentVerb}
+					nextButtonCallback={() => this._getNextVerb()}
+				/>
+				<VerbForms verb={this.state.currentVerb}/>
 			</KeyboardAvoidingView>
 		);
 	}
 }
 
-const verbs = [{
-	"infinitive": "abandonar",
-	"infinitive_english": "to abandon",
-	"mood_english": "Subjunctive",
-	"tense_english": "Imperfect",
-	"form_1p": "abandonamos",
-	"form_1s": "abandono",
-	"form_2s": "abandonas",
-	"form_3p": "abandonan",
-	"form_3s": "abandona",
-	"gerund": "abandonando",
-	"pastparticiple": "abandonado",
-}];
+const verbs = [
+	{
+		"infinitive": "abandonar",
+		"infinitive_english": "to abandon",
+		"mood_english": "Subjunctive",
+		"tense_english": "Imperfect",
+		"form_1p": "abandonamos",
+		"form_1s": "abandono",
+		"form_2s": "abandonas",
+		"form_3p": "abandonan",
+		"form_3s": "abandona",
+		"gerund": "abandonando",
+		"pastparticiple": "abandonado",
+	},
+	{
+		"infinitive": "hablar",
+		"infinitive_english": "to speak",
+		"mood_english": "Indicative",
+		"tense_english": "Present",
+		"form_1p": "hablamos",
+		"form_1s": "hablo",
+		"form_2s": "hablas",
+		"form_3p": "hablan",
+		"form_3s": "habla",
+		"gerund": "hablando",
+		"pastparticiple": "hablado",
+	},
+];
 
 const styles = StyleSheet.create({
 	container: {

@@ -11,27 +11,18 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 export class VerbHeader extends Component {
 	constructor(props) {
 		super(props);
-
-		var verb = this.props.verb;
-
-		this.verb = verb['infinitive'];
-		this.translation = verb['infinitive_english'];
-		this.mood = verb['mood_english'];
-		this.tense = verb['tense_english'];
-	}
-
-	_handleNext() {
 	}
 
 	render() {
-		let form = this.mood + ' ' + this.tense;
+		const verb = this.props.verb;
+		const form = verb['mood_english'] + ' ' + verb['tense_english'];
 		return (
 			<View style={styles.headerContainer}>
-				<Text style={[styles.headerText, styles.infinitive]}>{this.verb}</Text>
-				<Text style={[styles.headerText, styles.translation]}>{this.translation}</Text>
+				<Text style={[styles.headerText, styles.infinitive]}>{verb['infinitive']}</Text>
+				<Text style={[styles.headerText, styles.translation]}>{verb['infinitive_english']}</Text>
 				<Text style={[styles.headerText, styles.moodTense]}>{form}</Text>
 				<Button
-					onPress={() => this._handleNext}
+					onPress={this.props.nextButtonCallback}
 					title="Next"
 					color="#f7f7f7"
 				/>
