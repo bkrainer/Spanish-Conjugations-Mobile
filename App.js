@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import {
+	Text,
+	View,
+	StyleSheet,
+	TouchableHighlight,
+	KeyboardAvoidingView,
+} from 'react-native';
 import { VerbForms } from './Components/VerbForms.js';
 import { VerbHeader} from './Components/VerbHeader.js';
 
@@ -18,10 +24,13 @@ export default class Conjugator extends Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
+			/* Use the KeyboardAvoidingView component so the keyboard doesn't cover
+			 * important components
+			 */
+			<KeyboardAvoidingView behavior='padding' style={styles.container}>
 				<VerbHeader verb={this.currentVerb}/>
-				<VerbForms />
-			</View>
+				<VerbForms verb={this.currentVerb}/>
+			</KeyboardAvoidingView>
 		);
 	}
 }

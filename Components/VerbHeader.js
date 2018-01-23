@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 
 /********************************************************************
  * VerbHeader
@@ -20,6 +20,9 @@ export class VerbHeader extends Component {
 		this.tense = verb['tense_english'];
 	}
 
+	_handleNext() {
+	}
+
 	render() {
 		let form = this.mood + ' ' + this.tense;
 		return (
@@ -27,6 +30,11 @@ export class VerbHeader extends Component {
 				<Text style={[styles.headerText, styles.infinitive]}>{this.verb}</Text>
 				<Text style={[styles.headerText, styles.translation]}>{this.translation}</Text>
 				<Text style={[styles.headerText, styles.moodTense]}>{form}</Text>
+				<Button
+					onPress={() => this._handleNext}
+					title="Next"
+					color="#f7f7f7"
+				/>
 			</View>
 		);
 	}
