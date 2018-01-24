@@ -89,12 +89,24 @@ export class UserResponse extends Component {
 		});
 	}
 
+	/* replace the accented chars in a string with the un-accented counterparts. */
+	_replaceAccents(s) {
+		var replaced = s.replace(/[^A-Za-z\s]/g, function(c) {
+			return accentMap[c] || c;
+		});
+
+		return replaced;
+	}
+
 	/* validates the user's input for a given form against the correct answer
 	 * (stored in this.props.correctAnswers)
 	 */
 	_validateResponse(expected, actual) {
 		expected = expected.trim().toLowerCase();
 		actual = actual.trim().toLowerCase();
+
+		expected = this._replaceAccents(expected);
+		actual = this._replaceAccents(actual);
 
 		if (expected == actual) {
 			return true;
@@ -160,6 +172,17 @@ export class UserResponse extends Component {
 		);
 	}
 }
+
+const accentMap = {
+	"á": "a",
+	"é": "e",
+	"í": "i",
+	"ó": "o",
+	"ú": "u",
+	"ü": "u",
+	"ñ": "n",
+}
+
 const styles = StyleSheet.create({
 	input: {
 		height: 40,
