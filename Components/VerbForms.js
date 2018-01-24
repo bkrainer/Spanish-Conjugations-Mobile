@@ -107,7 +107,7 @@ const pronounMap = {
 
 const styles = StyleSheet.create({
 	verbFormsContainer: {
-		flex: 2,
+		flex: 7,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f7f7f7',
 		height: 35,
 		minWidth: 50,
-		margin: 10,
+		margin: 7,
 		padding: 10,
 		borderRadius: 5,
 		borderWidth: 1,

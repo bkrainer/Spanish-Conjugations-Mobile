@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableHighlight } from 'react-native';
 
 /********************************************************************
  * VerbHeader
@@ -21,11 +21,12 @@ export class VerbHeader extends Component {
 				<Text style={[styles.headerText, styles.infinitive]}>{verb['infinitive']}</Text>
 				<Text style={[styles.headerText, styles.translation]}>{verb['infinitive_english']}</Text>
 				<Text style={[styles.headerText, styles.moodTense]}>{form}</Text>
-				<Button
+				<TouchableHighlight
 					onPress={this.props.nextButtonCallback}
-					title="Next"
-					color="#f7f7f7"
-				/>
+					underlayColor='#0275d8'
+				>
+					<Text style={[styles.headerText, styles.nextButton]}>Next</Text>
+				</TouchableHighlight>
 			</View>
 		);
 	}
@@ -33,22 +34,26 @@ export class VerbHeader extends Component {
 
 const styles = StyleSheet.create({
 	headerContainer: {
-		flex: 1,
+		flex: 2,
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: '#0275d8',
 		padding: 25
 	},
 	infinitive: {
-		fontSize: 30,
+		fontSize: 25,
 		fontWeight: 'bold',
 	},
 	translation: {
-		fontSize: 25,
+		fontSize: 20,
 	},
 	moodTense: {
 		fontSize: 20,
-		margin: 20,
+		margin: 15,
+		fontStyle: 'italic',
+	},
+	nextButton: {
+		fontSize: 15,
 	},
 	headerText: {
 		color: '#f7f7f7',

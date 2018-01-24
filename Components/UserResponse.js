@@ -37,8 +37,14 @@ export class UserResponse extends Component {
 	 * 'Next' and we are now working with a new verb.
 	 */
 	componentWillReceiveProps(nextProps) {
-		/* We just need to check that the infinitive has changed. */
-		if (nextProps.correctAnswers['infinitive'] != this.props.correctAnswers['infinitive']) {
+		/* If the infinitive form has changed, or if the mood / tense have changed, then we've
+		 * received a new verb and need to reset the state
+		 */
+		if (
+			nextProps.correctAnswers['infinitive'] != this.props.correctAnswers['infinitive']
+			|| nextProps.correctAnswers['mood_english'] != this.props.correctAnswers['mood_english']
+			|| nextProps.correctAnswers['tense_english'] != this.props.correctAnswers['tense_english']
+		) {
 			this.setState(this.initialState());
 		}
 	}
