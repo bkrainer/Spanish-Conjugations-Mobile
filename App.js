@@ -40,7 +40,7 @@ export default class Conjugator extends Component {
 			/* Use the KeyboardAvoidingView component so the keyboard doesn't cover
 			 * important components
 			 */
-			<KeyboardAvoidingView behavior='padding' style={styles.container}>
+			<KeyboardAvoidingView behavior='padding' style={styles.container} keyboardVerticalOffset={40}>
 				<VerbHeader
 					verb={this.state.currentVerb}
 					nextButtonCallback={() => this._getNextVerb()}
