@@ -43,42 +43,50 @@ class UserResponse extends Component {
 	}
 
 	/* handler for onChangeText. When the text changes, set the state
-	 * to update the response hash.
+	 * to update the response hash, as well as the appropriate stylings
+	 * for each form.
 	 */
 	_onChangeText(text) {
-		let responses = this.state.responses;
 		const currentForm = this.props.currentForm;
-		responses[currentForm] = text;
+		let expected = this.props.correctAnswers[currentForm];
+		let actual = text;
 
-		/* after setting the state, call the _validateReponse callback,
-		 * to provide appropriate visual feedback about the response.
-		 */
+		let inputStyling = {};
+		let response = '';
+		if (actual.trim().length > 0) {
+			const correct = this._validateResponse(expected, actual);
+			if (correct) {
+				inputStyling = styles.correctResponse;
+				response = expected;
+			}
+			else {
+				inputStyling = styles.incorrectResponse;
+				response = actual;
+			}
+		}
+
+		let responses = this.state.responses;
+		responses[currentForm] = response;
+
+		let currentStyling = this.state.inputFeedback;
+		currentStyling[currentForm] = inputStyling;
+
 		this.setState({
 			responses: responses,
-		}, this._validateResponse(responses,currentForm));
+			inputFeedback: currentStyling,
+		});
 	}
 
 	/* validates the user's input for a given form against the correct answer
 	 * (stored in this.props.correctAnswers)
 	 */
-	_validateResponse(responses,currentForm) {
-		let expected = this.props.correctAnswers[currentForm];
-		let actual = responses[currentForm];
-		let currentStyling = this.state.inputFeedback;
-
+	_validateResponse(expected, actual) {
 		if (expected == actual) {
-			currentStyling[currentForm] = styles.correctResponse;
-		}
-		else if (actual.trim().length < 1) {
-			currentStyling[currentForm] = {};
+			return 1;
 		}
 		else {
-			currentStyling[currentForm] = styles.incorrectResponse;
+			return 0;
 		}
-
-		this.setState({
-			inputFeedback: currentStyling,
-		});
 	}
 
 	render() {
