@@ -37,7 +37,6 @@ export class ButtonGroup extends Component {
 
 			if (this.props.corrects[key]) {
 				buttonStyle.push(this.props.correctStyle);
-				//display += ' ✓';
 			}
 
 			return <TouchableHighlight
