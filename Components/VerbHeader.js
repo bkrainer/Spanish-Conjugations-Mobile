@@ -57,5 +57,6 @@ const styles = StyleSheet.create({
 	},
 	headerText: {
 		color: '#f7f7f7',
+		textAlign: 'center',
 	},
 });
