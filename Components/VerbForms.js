@@ -7,6 +7,7 @@ import {
 	TextInput,
 } from 'react-native';
 import { UserResponse } from './UserResponse.js';
+import { ButtonGroup } from './ButtonGroup.js';
 
 /**********************************************************************
  * VerbForms
@@ -50,33 +51,23 @@ export class VerbForms extends Component {
 	}
 
 	render() {
-		/* render each form in a loop, as these buttons are all rendered identically
-		 * except for their text
-		 */
-		const pronounKeys = Object.keys(pronounMap);
-		const renderedForms = pronounKeys.map(key => {
-			let displayForm = pronounMap[key];
-
-			return <TouchableHighlight
-				style={styles.formButton}
-				underlayColor='#0275d8'
-				onPress={() => this._handlePress(key)}
-				key={key}
-			>
-				<Text style={styles.buttonText}>{displayForm}</Text>
-			</TouchableHighlight>
-		});
-
 		/* if the current form is undefined, render it as ' ', otherwise
 		 * there is a small jump as the text is filled in later on
 		 */
 		const currentDisplayForm = pronounMap[this.state.currentForm] || ' ';
-
 		return (
 			<View style={styles.verbFormsContainer}>
-				<View style={styles.buttonsContainer}>
-					{renderedForms}
-				</View>
+				<ButtonGroup
+					group={pronounMap}
+					groupStyle={styles.buttonsContainer}
+					buttonStyle={styles.formButton}
+					textStyle={styles.buttonText}
+					selectedButtonStyle={styles.selectedButton}
+					selectedButtonTextStyle={styles.selectedButtonText}	
+					underlayColor='#0275d8'
+					handler={(key) => this._handlePress(key)}
+					selectedKey={this.state.currentForm}
+				/>
 				<View style={styles.currentForm}>
 					<Text>{currentDisplayForm}</Text>
 				</View>
@@ -139,9 +130,25 @@ const styles = StyleSheet.create({
 		shadowRadius: 1,
 		shadowOpacity: 0.5,
 	},
+	selectedButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#0275d8',
+		height: 35,
+		minWidth: 50,
+		margin: 7,
+		padding: 10,
+		borderRadius: 5,
+		borderWidth: 1,
+		borderColor: '#f7f7f7',
+	},
 	buttonText: {
 		fontWeight: 'bold',
 		color: '#0275d8',
+	},
+	selectedButtonText: {
+		fontWeight: 'bold',
+		color: '#f7f7f7',
 	},
 	inputContainer: {
 		marginLeft: 30,
