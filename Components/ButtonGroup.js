@@ -15,6 +15,8 @@ import { TouchableHighlight, Text, View } from 'react-native';
  * 	- selectedKey: which button in this group is currently selected
  * 	- selectedButtonStyle: style for selectedKey button
  * 	- selectedButtonTextStyle: style for selectedKey text
+ * 	- corrects: hash of key => whether that key currently has correct input
+ * 	- correctStyle: additional styling to apply to keys that are correct.
  ********************************************************************************/
 export class ButtonGroup extends Component {
 	constructor(props) {
@@ -25,13 +27,19 @@ export class ButtonGroup extends Component {
 		const groupKeys = Object.keys(this.props.group);
 		const renderedGroup = groupKeys.map(key => {
 			let display = this.props.group[key];
-			let buttonStyle = this.props.buttonStyle;
+			let buttonStyle = [ this.props.buttonStyle ];
 			let textStyle = this.props.textStyle;
 
 			if (key == this.props.selectedKey) {
-				buttonStyle = this.props.selectedButtonStyle;
+				buttonStyle = [ this.props.selectedButtonStyle ];
 				textStyle = this.props.selectedButtonTextStyle;
 			}
+
+			if (this.props.corrects[key]) {
+				buttonStyle.push(this.props.correctStyle);
+				//display += ' ✓';
+			}
+
 			return <TouchableHighlight
 				style={buttonStyle}
 				underlayColor={this.props.underlayColor}

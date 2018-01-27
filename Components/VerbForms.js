@@ -27,6 +27,7 @@ export class VerbForms extends Component {
 		return {
 			currentForm: '',
 			placeholderText: 'Select a form to conjugate...',
+			correctForms: {},
 		};
 	};
 
@@ -50,6 +51,17 @@ export class VerbForms extends Component {
 		});
 	}
 
+	/* tracks which forms are currently correctly answered, so we can
+	 * display the button styling to reflect this state
+	 */
+	_trackCorrects(form, isCorrect) {
+		let corrects = this.state.correctForms;
+		corrects[form] = isCorrect;
+		this.setState({
+			correctForms: corrects,
+		});
+	}
+
 	render() {
 		/* if the current form is undefined, render it as ' ', otherwise
 		 * there is a small jump as the text is filled in later on
@@ -67,6 +79,8 @@ export class VerbForms extends Component {
 					underlayColor='#0275d8'
 					handler={(key) => this._handlePress(key)}
 					selectedKey={this.state.currentForm}
+					corrects={this.state.correctForms}
+					correctStyle={styles.correctStyle}
 				/>
 				<View style={styles.currentForm}>
 					<Text>{currentDisplayForm}</Text>
@@ -78,6 +92,7 @@ export class VerbForms extends Component {
 						/* only let the user edit the text box if they've selected a form */
 						editable={this.state.currentForm.length > 0}
 						correctAnswers={this.props.verb}
+						correctHandler={(form,correctness) => this._trackCorrects(form,correctness)}
 					/>
 				</View>
 			</View>
@@ -141,6 +156,10 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		borderWidth: 1,
 		borderColor: '#f7f7f7',
+	},
+	correctStyle: {
+		borderColor: '#28a745',
+		borderWidth: 3,
 	},
 	buttonText: {
 		fontWeight: 'bold',

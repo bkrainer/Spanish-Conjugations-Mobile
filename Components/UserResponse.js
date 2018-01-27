@@ -83,6 +83,8 @@ export class UserResponse extends Component {
 			responses: responses,
 			inputFeedback: currentStyling,
 		});
+
+		this.props.correctHandler(currentForm, correct);
 	}
 
 	/* either shows or hides the answer for the current form */
