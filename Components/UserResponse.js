@@ -6,6 +6,7 @@ import {
 	TouchableHighlight,
 	TextInput,
 } from 'react-native';
+import { ValidateVerb } from './utils';
 
 /**********************************************************************
  * UserResponse
@@ -61,7 +62,7 @@ export class UserResponse extends Component {
 		let response = '';
 		let correct = false;
 		if (actual.trim().length > 0) {
-			correct = this._validateResponse(expected, actual);
+			correct = ValidateVerb(expected, actual);
 			if (correct) {
 				inputStyling = styles.correctResponse;
 				response = expected;
@@ -84,37 +85,6 @@ export class UserResponse extends Component {
 		});
 	}
 
-	/* replace the accented chars in a string with the un-accented counterparts. */
-	_replaceAccents(s) {
-		var replaced = s.replace(/[^A-Za-z\s]/g, function(c) {
-			return accentMap[c] || c;
-		});
-
-		return replaced;
-	}
-
-	/* validates the user's input for a given form against the correct answer
-	 * (stored in this.props.correctAnswers)
-	 */
-	_validateResponse(expected, actual) {
-		if (!expected || !actual) {
-			return false;
-		}
-
-		expected = expected.trim().toLowerCase();
-		actual = actual.trim().toLowerCase();
-
-		expected = this._replaceAccents(expected);
-		actual = this._replaceAccents(actual);
-
-		if (expected == actual) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	/* either shows or hides the answer for the current form */
 	_toggleAnswer() {
 		const currentForm = this.props.currentForm;
@@ -133,7 +103,7 @@ export class UserResponse extends Component {
 	_isCorrect(form) {
 		const current = this.state.responses[form];
 		const actual = this.props.correctAnswers[form];
-		return this._validateResponse(actual,current);
+		return ValidateVerb(actual,current);
 	}
 
 	render() {
@@ -176,16 +146,6 @@ export class UserResponse extends Component {
 			</View>
 		);
 	}
-}
-
-const accentMap = {
-	"á": "a",
-	"é": "e",
-	"í": "i",
-	"ó": "o",
-	"ú": "u",
-	"ü": "u",
-	"ñ": "n",
 }
 
 const styles = StyleSheet.create({
