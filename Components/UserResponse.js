@@ -28,7 +28,6 @@ export class UserResponse extends Component {
 		return {
 			responses: {}, // stores strings mapping each form to the users answer for that form
 			inputFeedback: {}, // stores the appropriate styling for each form
-			corrects: {}, // maps each form to a boolean value (whether or not the answer is correct)
 		};
 	}
 
@@ -79,13 +78,9 @@ export class UserResponse extends Component {
 		let currentStyling = this.state.inputFeedback;
 		currentStyling[currentForm] = inputStyling;
 
-		let corrects = this.state.corrects;
-		corrects[currentForm] = correct;
-
 		this.setState({
 			responses: responses,
 			inputFeedback: currentStyling,
-			corrects: corrects,
 		});
 	}
 
@@ -102,6 +97,10 @@ export class UserResponse extends Component {
 	 * (stored in this.props.correctAnswers)
 	 */
 	_validateResponse(expected, actual) {
+		if (!expected || !actual) {
+			return false;
+		}
+
 		expected = expected.trim().toLowerCase();
 		actual = actual.trim().toLowerCase();
 
@@ -122,13 +121,19 @@ export class UserResponse extends Component {
 		const correctAnswer = this.props.correctAnswers[currentForm];
 
 		let response = '';
-		isCorrect = this.state.corrects[currentForm];
-		if (!this.state.corrects[currentForm]) {
+		isCorrect = this._isCorrect(currentForm);
+		if (!isCorrect) {
 			response = correctAnswer;
 		}
 
 		/* call the _onChangeText handler with the response we want to insert into the text box */
 		this._onChangeText(response);
+	}
+
+	_isCorrect(form) {
+		const current = this.state.responses[form];
+		const actual = this.props.correctAnswers[form];
+		return this._validateResponse(actual,current);
 	}
 
 	render() {
@@ -143,7 +148,7 @@ export class UserResponse extends Component {
 			? [ styles.input, styles.editableInput, validationStyle ]
 			: [ styles.input, styles.readOnlyInput ];
 
-		const toggleAnswerText = this.state.corrects[currentForm] ? 'Hide' : 'Show';
+		const toggleAnswerText = this._isCorrect(currentForm) ? 'Hide' : 'Show';
 
 		return (
 			<View>
