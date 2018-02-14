@@ -9,7 +9,10 @@ import {
 import { VerbForms } from './Components/VerbForms.js';
 import { VerbHeader} from './Components/VerbHeader.js';
 
+const _ = require('underscore');
+
 const verbs = require('./verbs.json');
+const verbKeys = _.keys(verbs);
 
 /**********************************************************************
  * Conjugator
@@ -20,19 +23,26 @@ export default class Conjugator extends Component {
 	constructor(props) {
 		super(props);
 
-		const i = Math.floor(Math.random() * verbs.length);
 		this.state = {
-			currentVerb: verbs[i],
+			currentVerb: this._getRandomVerb(),
 		};
+	}
+
+	/* selects the next verb at random */
+	_getRandomVerb() {
+		const randomVerb = _.sample(verbKeys);
+		const forms = verbs[randomVerb];
+		const randomForm = _.sample(forms);
+
+		return randomForm;
 	}
 
 	/* callback function for fetching the next verb to be displayed. This is called in the
 	 * child component VerbHeader when the 'Next' button is clicked
 	 */
 	_getNextVerb() {
-		const i = Math.floor(Math.random() * verbs.length);
 		this.setState({
-			currentVerb: verbs[i],
+			currentVerb: this._getRandomVerb(),
 		});
 	}
 
