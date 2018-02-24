@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { VerbForms } from './Components/VerbForms.js';
 import { VerbHeader} from './Components/VerbHeader.js';
+import { Settings } from './Components/Settings.js';
 
 const _ = require('underscore');
 
@@ -57,6 +58,7 @@ export default class Conjugator extends Component {
 					nextButtonCallback={() => this._getNextVerb()}
 				/>
 				<VerbForms verb={this.state.currentVerb}/>
+				<Settings />
 			</View>
 		);
 	}
