@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, Button, Modal, StyleSheet, FlatList, Switch } from 'react-native';
 
+const _ = require('underscore');
+
 export class Settings extends Component {
 	state = {
 		modalVisible: false,
@@ -14,18 +16,30 @@ export class Settings extends Component {
 		this.setState({ modalVisible: false });
 	}
 
+	/* function for rendering a FlatList element in the settings modal.
+	 * Each element is a tense string, followed by a Switch component
+	 */
 	renderSetting(item) {
 		return (
 			<View style={styles.setting}>
 				<Text>{item.key}</Text>
 				<Switch
-					value={true}
+					value={this.props.data[item.key]}
+					onValueChange={() => this.props.parentCallback(item.key)}
 				/>
 			</View>
 		);
 	}
 
 	render() {
+		/* the FlatList component expects an array of hashes of the form { key: '...' }
+		 * Each of these keys corresponds to a key in the this.props.data hash.
+		 */
+		tenses = this.props.data;
+		tenseHash = _.map(_.keys(tenses), function(tense) {
+			return { key: tense }
+		});
+
 		return (
 			<View>
 				<Modal
@@ -36,7 +50,7 @@ export class Settings extends Component {
 					<View style={styles.modalContainer}>
 						<View style={styles.innerContainer}>
 							<FlatList
-								data={tenses}
+								data={tenseHash}
 								renderItem={({item}) => this.renderSetting(item)}
 							/>
 							<Button
@@ -56,27 +70,6 @@ export class Settings extends Component {
 	}
 }
 
-const tenses = [
-	{ key: 'Indicative Present'},
-	{ key: 'Indicative Future'},
-	{ key: 'Indicative Imperfect'},
-	{ key: 'Indicative Preterite'},
-	{ key: 'Indicative Conditional'},
-	{ key: 'Indicative Present Perfect'},
-	{ key: 'Indicative Future Perfect'},
-	{ key: 'Indicative Past Perfect'},
-	{ key: 'Indicative Preterite (Archaic)'},
-	{ key: 'Indicative Conditional Perfect'},
-	{ key: 'Subjunctive Present'},
-	{ key: 'Subjunctive Imperfect'},
-	{ key: 'Subjunctive Future'},
-	{ key: 'Subjunctive Present Perfect'},
-	{ key: 'Subjunctive Future Perfect'},
-	{ key: 'Subjunctive Past Perfect'},
-	{ key: 'Imperative Affirmative Present'},
-	{ key: 'Imperative Negative Present'},
-];
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -92,11 +85,10 @@ const styles = StyleSheet.create({
 	setting: {
 		flex: 1,
 		flexDirection: 'row',
-		margin: 1,
 		padding: 3,
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		borderWidth: 0.5,
+		borderTopWidth: 0.5,
 		borderColor: 'black',
 	},
 });

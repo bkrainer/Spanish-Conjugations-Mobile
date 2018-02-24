@@ -24,9 +24,28 @@ export default class Conjugator extends Component {
 	constructor(props) {
 		super(props);
 
+		initialTenseSettings = _.reduce(tenses, function(hash, tense) {
+			hash[tense] = true;
+			return hash;
+		}, {});
+
 		this.state = {
 			currentVerb: this._getRandomVerb(),
+			settings: initialTenseSettings,
 		};
+	}
+
+	/* callback function for controlling the state of which tenses can currently be
+	 * practiced. if a tense is turned on/off via the settings page, this callback is
+	 * invoked and that tense's value is toggled.
+	 */
+	_toggleTenseSetting(tense) {
+		let currentSettings = this.state.settings;
+		const currentValue = currentSettings[tense];
+		currentSettings[tense] = !currentValue;
+		this.setState({
+			settings: currentSettings,
+		});
 	}
 
 	/* selects the next verb at random */
@@ -58,11 +77,35 @@ export default class Conjugator extends Component {
 					nextButtonCallback={() => this._getNextVerb()}
 				/>
 				<VerbForms verb={this.state.currentVerb}/>
-				<Settings />
+				<Settings 
+					data={this.state.settings}
+					parentCallback={(tense) => this._toggleTenseSetting(tense)}
+				/>
 			</View>
 		);
 	}
 }
+
+const tenses = [
+	'Indicative Present',
+	'Indicative Future',
+	'Indicative Imperfect',
+	'Indicative Preterite',
+	'Indicative Conditional',
+	'Indicative Present Perfect',
+	'Indicative Future Perfect',
+	'Indicative Past Perfect',
+	'Indicative Preterite (Archaic)',
+	'Indicative Conditional Perfect',
+	'Subjunctive Present',
+	'Subjunctive Imperfect',
+	'Subjunctive Future',
+	'Subjunctive Present Perfect',
+	'Subjunctive Future Perfect',
+	'Subjunctive Past Perfect',
+	'Imperfative Affirmative Present',
+	'Imperative Negative Present',
+];
 
 const styles = StyleSheet.create({
 	container: {
