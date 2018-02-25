@@ -42,7 +42,16 @@ export default class Conjugator extends Component {
 	_toggleTenseSetting(tense) {
 		let currentSettings = this.state.settings;
 		const currentValue = currentSettings[tense];
-		currentSettings[tense] = !currentValue;
+
+		/* only allow a value to be set to false if there are tenses that are set to true */
+		const counts = _.countBy(_.keys(currentSettings), function(tense) {
+			return currentSettings[tense] ? 'true' : 'false';
+		});
+
+		if (!currentValue || (currentValue &&  counts['true'] > 1)) {
+			currentSettings[tense] = !currentValue;
+		}
+
 		this.setState({
 			settings: currentSettings,
 		});
@@ -52,7 +61,25 @@ export default class Conjugator extends Component {
 	_getRandomVerb() {
 		const randomVerb = _.sample(verbKeys);
 		const forms = verbs[randomVerb];
-		const randomForm = _.sample(forms);
+
+		let randomForm;
+		/* filter the forms based on whether or not that form is selected in the settings */
+		if (this.state === undefined) {
+			randomForm = _.sample(forms);
+		}
+		else {
+			const settings = this.state.settings;
+			const selectedTenses = _.filter(_.keys(this.state.settings), function(tense) {
+				return settings[tense];
+			});
+
+			const possibleForms = _.filter(forms, function(form) {
+				const tense = form['mood_english'] + ' ' + form['tense_english'];
+				return _.contains(selectedTenses, tense);
+			});
+
+			randomForm = _.sample(possibleForms);
+		}
 
 		return randomForm;
 	}
@@ -103,7 +130,7 @@ const tenses = [
 	'Subjunctive Present Perfect',
 	'Subjunctive Future Perfect',
 	'Subjunctive Past Perfect',
-	'Imperfative Affirmative Present',
+	'Imperative Affirmative Present',
 	'Imperative Negative Present',
 ];
 
