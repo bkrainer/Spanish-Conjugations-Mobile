@@ -9,6 +9,8 @@ import {
 import { UserResponse } from './UserResponse.js';
 import { ButtonGroup } from './ButtonGroup.js';
 
+const _ = require('underscore');
+
 /**********************************************************************
  * VerbForms
  *
@@ -31,13 +33,14 @@ export class VerbForms extends Component {
 		};
 	};
 
-	/* The only prop this component inherits is the current verb being tested.
-	 * So whenever the prop changes, we want to reset this component, so it
-	 * is rendered without an initial verb form selected and the appropriate
-	 * placeholder text.
+	/* The prop this component receives is the verb hash for the current verb being tested.
+	 * If the nextProps variable is equal to this.props, then we don't need to reset the state.
+	 * This situation arises when the settings are updated, but the verb hasn't actually changed.
 	 */
 	componentWillReceiveProps(nextProps) {
-		this.setState(this.initState());
+		if (!_.isEqual(nextProps, this.props)) {
+			this.setState(this.initState());
+		}
 	}
 
 	/* button press handler. when pressed, we want to display the current form
