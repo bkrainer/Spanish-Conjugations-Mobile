@@ -24,10 +24,16 @@ export default class Conjugator extends Component {
 	constructor(props) {
 		super(props);
 
+		/* start with a single random tense, and the user can adjust the tense
+		 * as they see fit.
+		 */
+		const randomTense = _.sample(tenses);
 		initialTenseSettings = _.reduce(tenses, function(hash, tense) {
-			hash[tense] = true;
+			hash[tense] = tense === randomTense;
 			return hash;
 		}, {});
+
+		this.initialSettings = initialTenseSettings;
 
 		this.state = {
 			currentVerb: this._getRandomVerb(),
@@ -63,23 +69,25 @@ export default class Conjugator extends Component {
 		const forms = verbs[randomVerb];
 
 		let randomForm;
+		let settings;
 		/* filter the forms based on whether or not that form is selected in the settings */
 		if (this.state === undefined) {
-			randomForm = _.sample(forms);
+			settings = this.initialSettings;
 		}
 		else {
-			const settings = this.state.settings;
-			const selectedTenses = _.filter(_.keys(this.state.settings), function(tense) {
-				return settings[tense];
-			});
-
-			const possibleForms = _.filter(forms, function(form) {
-				const tense = form['mood_english'] + ' ' + form['tense_english'];
-				return _.contains(selectedTenses, tense);
-			});
-
-			randomForm = _.sample(possibleForms);
+			settings = this.state.settings;
 		}
+
+		const selectedTenses = _.filter(_.keys(settings), function(tense) {
+			return settings[tense];
+		});
+
+		const possibleForms = _.filter(forms, function(form) {
+			const tense = form['mood_english'] + ' ' + form['tense_english'];
+			return _.contains(selectedTenses, tense);
+		});
+
+		randomForm = _.sample(possibleForms);
 
 		return randomForm;
 	}
